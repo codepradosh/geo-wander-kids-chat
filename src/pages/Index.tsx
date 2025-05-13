@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Container } from "@/components/ui/container";
 import { Separator } from "@/components/ui/separator";
@@ -10,24 +11,7 @@ import FactCard from '@/components/FactCard';
 import FunFactBubble from '@/components/FunFactBubble';
 import NatureBackground from '@/components/NatureBackground';
 import { Globe, Trees, Mountain, Cloud, Rainbow } from 'lucide-react';
-
-// Mock data - In a real app, this would come from an API
-const mockLocationData = {
-  name: "Paris",
-  latitude: 48.8566,
-  longitude: 2.3522,
-  population: "2.2 million",
-  country: "France",
-  continent: "Europe",
-  funFacts: [
-    "The Eiffel Tower was originally built as a temporary exhibit for the 1889 World Fair!",
-    "Paris has over 170 museums, including the world-famous Louvre!"
-  ],
-  nearbyLocations: [
-    { name: "Versailles", latitude: 48.8044, longitude: 2.1232 },
-    { name: "Disneyland Paris", latitude: 48.8673, longitude: 2.7836 }
-  ]
-};
+import { sendChatMessage, formatLocationData, LocationData } from '@/services/geochatService';
 
 // Sample welcome messages
 const welcomeMessages = [
@@ -51,42 +35,25 @@ const Index = () => {
     { text: welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)], isBot: true }
   ]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showLocation, setShowLocation] = useState(false);
+  const [locationData, setLocationData] = useState<LocationData | null>(null);
 
-  const handleSendMessage = (message: string) => {
+  const handleSendMessage = async (message: string) => {
     // Add user message
     setMessages(prev => [...prev, { text: message, isBot: false }]);
     
-    // Simulate loading
+    // Start loading
     setIsLoading(true);
     
-    // Simulate response (in a real app, this would call an API)
-    setTimeout(() => {
-      let botResponse = "";
+    try {
+      // Call the actual API
+      const response = await sendChatMessage(message);
       
-      // Very simple "AI" responses based on keywords
-      const lowercaseMsg = message.toLowerCase();
-      
-      if (lowercaseMsg.includes("paris") || lowercaseMsg.includes("france")) {
-        botResponse = "Paris is the capital city of France! It's famous for the Eiffel Tower, delicious pastries, and beautiful art. Over 30 million people visit Paris every year!";
-        setShowLocation(true);
-      } 
-      else if (lowercaseMsg.includes("mountain") || lowercaseMsg.includes("everest")) {
-        botResponse = "Mount Everest is the tallest mountain in the world! It's in the Himalayan mountain range between Nepal and Tibet. It's 29,032 feet (8,849 meters) tall!";
-      }
-      else if (lowercaseMsg.includes("ocean") || lowercaseMsg.includes("sea")) {
-        botResponse = "The Pacific Ocean is the largest ocean on Earth! It covers more than 30% of Earth's surface. That's bigger than all the land combined!";
-      }
-      else if (lowercaseMsg.includes("animal") || lowercaseMsg.includes("africa")) {
-        botResponse = "Africa has amazing animals like lions, elephants, giraffes, zebras, and hippos! Many of these animals live in grasslands called savannas.";
-      }
-      else {
-        botResponse = "That's a great question! I'd love to tell you about places around the world. Try asking me about specific countries, cities, or natural wonders!";
-      }
+      // Format the response data
+      const formattedData = formatLocationData(response);
+      setLocationData(formattedData);
       
       // Add bot response
-      setMessages(prev => [...prev, { text: botResponse, isBot: true }]);
-      setIsLoading(false);
+      setMessages(prev => [...prev, { text: response.answer, isBot: true }]);
       
       // Show success toast
       toast({
@@ -94,7 +61,17 @@ const Index = () => {
         description: "Keep exploring to discover more about our world!",
         variant: "default",
       });
-    }, 1500);
+    } catch (error) {
+      console.error("Error handling message:", error);
+      
+      // Add fallback response in case of error
+      setMessages(prev => [...prev, { 
+        text: "I'm having trouble connecting to my knowledge base right now. Please try again later!", 
+        isBot: true 
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -151,17 +128,17 @@ const Index = () => {
             
             <div className="mb-4">
               <MapDisplay 
-                mainLocation={showLocation ? {
-                  name: mockLocationData.name,
-                  latitude: mockLocationData.latitude,
-                  longitude: mockLocationData.longitude
+                mainLocation={locationData ? {
+                  name: locationData.name,
+                  latitude: locationData.latitude || 0,
+                  longitude: locationData.longitude || 0
                 } : undefined}
-                nearbyLocations={showLocation ? mockLocationData.nearbyLocations : []}
+                nearbyLocations={locationData?.nearbyLocations || []}
               />
             </div>
 
-            {showLocation && (
-              <FunFactBubble fact={mockLocationData.funFacts[Math.floor(Math.random() * mockLocationData.funFacts.length)]} />
+            {locationData && locationData.funFacts && locationData.funFacts.length > 0 && (
+              <FunFactBubble fact={locationData.funFacts[0]} />
             )}
           </div>
           
@@ -170,14 +147,17 @@ const Index = () => {
               <GlobeMascot />
             </div>
             
-            {showLocation && (
+            {locationData && (
               <FactCard 
-                title={`About ${mockLocationData.name}`}
+                title={`About ${locationData.name}`}
                 facts={[
-                  { icon: "🗺️", label: "Continent", value: mockLocationData.continent },
-                  { icon: "🏙️", label: "Population", value: mockLocationData.population },
-                  { icon: "🌍", label: "Country", value: mockLocationData.country },
-                  { icon: "📍", label: "Coordinates", value: `${mockLocationData.latitude.toFixed(2)}°, ${mockLocationData.longitude.toFixed(2)}°` }
+                  { icon: "🗺️", label: "Type", value: locationData.label || "Location" },
+                  { icon: "🏙️", label: "Population", value: locationData.population || "Unknown" },
+                  { icon: "🌍", label: "Region", value: locationData.region || "Unknown" },
+                  { icon: "🕒", label: "Timezone", value: locationData.timezone || "Unknown" },
+                  { icon: "✨", label: "Known as", value: locationData.contextual_label || "Amazing Place" },
+                  { icon: "📍", label: "Coordinates", value: locationData.latitude && locationData.longitude ? 
+                    `${locationData.latitude.toFixed(2)}°, ${locationData.longitude.toFixed(2)}°` : "Unknown" }
                 ]}
               />
             )}

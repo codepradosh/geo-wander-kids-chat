@@ -15,7 +15,7 @@ interface MapDisplayProps {
 const MapDisplay: React.FC<MapDisplayProps> = ({ mainLocation, nearbyLocations = [] }) => {
   if (!mainLocation) {
     return (
-      <div className="map-container flex items-center justify-center bg-gradient-to-r from-kid-green/10 to-kid-blue/10 border-4 border-kid-green/20">
+      <div className="map-container flex items-center justify-center bg-gradient-to-r from-kid-green/10 to-kid-blue/10 border-4 border-kid-green/20 h-64 rounded-xl">
         <div className="text-center p-8">
           <img 
             src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" 
@@ -31,7 +31,7 @@ const MapDisplay: React.FC<MapDisplayProps> = ({ mainLocation, nearbyLocations =
   // In a real app, this would be an actual map implementation
   // For now, we'll create a simplified visual representation
   return (
-    <div className="map-container relative bg-gradient-to-br from-kid-blue/20 to-kid-green/20 overflow-hidden border-4 border-kid-green/20 shadow-md">
+    <div className="map-container relative bg-gradient-to-br from-kid-blue/20 to-kid-green/20 overflow-hidden border-4 border-kid-green/20 shadow-md h-64 rounded-xl">
       <div className="absolute inset-0 bg-gradient-to-br from-kid-blue/30 to-kid-green/30"></div>
       
       {/* Nature elements overlay */}
@@ -68,7 +68,7 @@ const MapDisplay: React.FC<MapDisplayProps> = ({ mainLocation, nearbyLocations =
       </div>
       
       {/* Nearby location pins */}
-      {nearbyLocations.map((location, index) => (
+      {nearbyLocations.filter(loc => loc.latitude && loc.longitude).map((location, index) => (
         <div 
           key={index}
           className="absolute w-6 h-6 transform -translate-x-1/2 -translate-y-1/2"
