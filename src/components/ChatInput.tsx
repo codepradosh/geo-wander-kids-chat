@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Globe } from "lucide-react";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -33,7 +33,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
     <form onSubmit={handleSubmit} className="w-full">
       <div className="flex gap-2">
         <Input
-          className="rounded-full py-6 px-4 text-lg border-2 border-kid-blue/30 focus-visible:ring-kid-blue"
+          className="rounded-full py-6 px-4 text-lg border-2 border-kid-blue/30 focus-visible:ring-kid-blue bg-white/70 backdrop-blur-sm"
           placeholder={randomPlaceholder}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -41,10 +41,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
         />
         <Button 
           type="submit" 
-          className="rounded-full bg-kid-blue hover:bg-kid-blue/80 text-white py-6"
+          className="rounded-full bg-gradient-to-r from-kid-blue to-kid-green hover:opacity-90 text-white py-6 shadow-md"
           disabled={isLoading || !message.trim()}
         >
-          {isLoading ? "Thinking..." : <Search className="h-5 w-5" />}
+          {isLoading ? "Thinking..." : <Globe className="h-5 w-5" />}
         </Button>
       </div>
     </form>

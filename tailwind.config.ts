@@ -107,13 +107,22 @@ export default {
 					'100%': {
 						transform: 'rotate(360deg)'
 					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0)'
+					},
+					'50%': {
+						transform: 'translateY(-8px)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'bounce-slow': 'bounce-slow 3s ease-in-out infinite',
-				'rotate-slow': 'rotate-slow 30s linear infinite'
+				'rotate-slow': 'rotate-slow 30s linear infinite',
+				'float': 'float 3s ease-in-out infinite'
 			},
 			fontFamily: {
 				'rounded': ['var(--font-rounded)', 'system-ui', 'sans-serif']
