@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Container } from "@/components/ui/container";
 import { Separator } from "@/components/ui/separator";
@@ -10,7 +9,7 @@ import MapDisplay from '@/components/MapDisplay';
 import FactCard from '@/components/FactCard';
 import FunFactBubble from '@/components/FunFactBubble';
 import NatureBackground from '@/components/NatureBackground';
-import { Globe, Tree, Mountain, Cloud, Rainbow } from 'lucide-react';
+import { Globe, Trees, Mountain, Cloud, Rainbow } from 'lucide-react';
 
 // Mock data - In a real app, this would come from an API
 const mockLocationData = {
@@ -142,7 +141,7 @@ const Index = () => {
                       disabled={isLoading}
                       className="bg-gradient-to-r from-kid-green/20 to-kid-blue/20 hover:from-kid-green/30 hover:to-kid-blue/30 text-gray-700 text-sm rounded-full px-3 py-1 border border-kid-green/20"
                     >
-                      {index % 2 === 0 ? <Tree className="inline-block h-3 w-3 mr-1" /> : <Mountain className="inline-block h-3 w-3 mr-1" />}
+                      {index % 2 === 0 ? <Trees className="inline-block h-3 w-3 mr-1" /> : <Mountain className="inline-block h-3 w-3 mr-1" />}
                       {question}
                     </button>
                   ))}
