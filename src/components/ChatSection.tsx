@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
@@ -118,8 +117,8 @@ const ChatSection = () => {
         />
       </div>
 
-      {locationData && locationData.funFacts && locationData.funFacts.length > 0 && (
-        <FunFactBubble fact={locationData.funFacts[0]} />
+      {locationData?.mainAttractions && locationData.mainAttractions.length > 0 && (
+        <FunFactBubble mainAttractions={locationData.mainAttractions} />
       )}
     </div>
   );

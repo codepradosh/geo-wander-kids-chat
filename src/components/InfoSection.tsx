@@ -1,4 +1,3 @@
-
 import React from 'react';
 import GlobeMascot from '@/components/GlobeMascot';
 import FactCard from '@/components/FactCard';
@@ -24,7 +23,8 @@ const InfoSection = () => {
             { icon: "🕒", label: "Timezone", value: locationData.timezone || "Unknown" },
             { icon: "✨", label: "Known as", value: locationData.contextual_label || "Amazing Place" },
             { icon: "📍", label: "Coordinates", value: locationData.latitude && locationData.longitude ? 
-              `${locationData.latitude.toFixed(2)}°, ${locationData.longitude.toFixed(2)}°` : "Unknown" }
+              `${locationData.latitude.toFixed(2)}°, ${locationData.longitude.toFixed(2)}°` : "Unknown" },
+            { icon: "🏢", label: "Nearby Places", value: locationData.nearbyLocations?.map(loc => loc.name).join(", ") || "None" }
           ]}
         />
       )}

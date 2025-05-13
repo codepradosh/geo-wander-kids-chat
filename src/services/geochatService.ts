@@ -1,4 +1,3 @@
-
 import { toast } from "@/hooks/use-toast";
 
 export interface GeoLocation {
@@ -20,6 +19,7 @@ export interface LocationData {
   contextual_label?: string;
   funFacts?: string[];
   nearbyLocations?: GeoLocation[];
+  mainAttractions?: string[];
 }
 
 export interface ChatResponse {
@@ -39,6 +39,7 @@ export interface ChatResponse {
       lat: number;
       lon: number;
     }>;
+    main_attractions?: string[];
   };
 }
 
@@ -91,5 +92,6 @@ export const formatLocationData = (data: ChatResponse): LocationData => {
       latitude: location.lat,
       longitude: location.lon,
     })) || [],
+    mainAttractions: sourceData.main_attractions || []
   };
 };
