@@ -118,7 +118,7 @@ const ChatSection = () => {
                                   latitude: locationData.latitude || 0,
                                   longitude: locationData.longitude || 0
                                 } : undefined}
-                                nearbyLocations={locationData?.nearbyLocations || []}/>
+                                locations={locationData?.nearbyLocations || []}/>
       </div>
 
       {locationData?.mainAttractions && locationData.mainAttractions.length > 0 && (

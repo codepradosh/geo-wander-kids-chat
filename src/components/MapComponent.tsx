@@ -17,8 +17,8 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 interface Location {
   name: string;
-  lat: number;
-  long: number;
+  latitude: number;
+  longitude: number;
 }
 
 interface Props {
@@ -26,19 +26,20 @@ interface Props {
 }
 
 // Helper component to update map center
-const RecenterMap = ({ lat, lng }: { lat: number; lng: number }) => {
+const RecenterMap = ({ latitude, longitude }: { latitude: number; longitude: number }) => {
   const map = useMap();
   useEffect(() => {
-    map.setView([lat, lng], map.getZoom());
-  }, [lat, lng, map]);
+    map.setView([latitude, longitude], map.getZoom());
+  }, [latitude, longitude, map]);
 
   return null;
 };
 
 const MapComponent: React.FC<Props> = ({ locations }) => {
   const defaultCenter: [number, number] = locations.length
-    ? [locations[0].lat, locations[0].long]
+    ? [locations[0].latitude, locations[0].longitude]
     : [0, 0];
+//     console.log(locations);
 
   return (
     <MapContainer center={defaultCenter} zoom={2} style={{ height: "500px", width: "100%" }}>
@@ -47,10 +48,10 @@ const MapComponent: React.FC<Props> = ({ locations }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {locations.length > 0 && (
-        <RecenterMap lat={locations[0].lat} lng={locations[0].long} />
+        <RecenterMap latitude={locations[0].latitude} longitude={locations[0].longitude} />
       )}
       {locations.map((loc, index) => (
-        <Marker key={index} position={[loc.lat, loc.lon]}>
+        <Marker key={index} position={[loc.latitude, loc.longitude]}>
           <Popup>{loc.name}</Popup>
         </Marker>
       ))}
