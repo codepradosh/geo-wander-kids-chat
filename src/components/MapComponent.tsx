@@ -15,9 +15,9 @@ const DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const MapComponent = ({ locations }) => {
-  const center = locations.length
-    ? [locations[0].lat, locations[0].long]
+const MapComponent = ({ mainLocation, locations }) => {
+  const center = mainLocation
+    ? [mainLocation.lat, mainLocation.long]
     : [0, 0];
 
   return (
