@@ -113,7 +113,7 @@ const ChatSection = () => {
       </div>
       
       <div className="mb-4">
-        <MapComponent locations={locations}>
+        <MapComponent locations={locations}/>
       </div>
 
       {locationData?.mainAttractions && locationData.mainAttractions.length > 0 && (

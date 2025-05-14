@@ -44,7 +44,7 @@ export interface ChatResponse {
 }
 
 // The backend URL - you would typically store this in an environment variable
-const API_URL = "http://localhost:8090";
+const API_URL = "http://localhost:8080";
 
 export const sendChatMessage = async (message: string): Promise<ChatResponse> => {
   try {

@@ -16,7 +16,7 @@ const MapDisplay: React.FC<MapDisplayProps> = ({ mainLocation, nearbyLocations =
     return (
       <div className="map-container flex items-center justify-center bg-gradient-to-r from-kid-green/10 to-kid-blue/10 border-4 border-kid-green/20 h-64 rounded-xl">
         <div className="text-center p-8">
-          <img 
+          <img
             src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" 
             alt="Nature scene" 
             className="w-24 h-24 mx-auto mb-4 rounded-full object-cover shadow-md"
@@ -95,12 +95,12 @@ const MapDisplay: React.FC<MapDisplayProps> = ({ mainLocation, nearbyLocations =
           location.latitude,
           location.longitude
         );
-
+        const clamp = (value: number, min = 0, max = 100) => Math.max(min, Math.min(max, value));
         // Calculate line coordinates
-        const mainX = 50 + (mainLocation.longitude / 180) * 40;
-        const mainY = 50 - (mainLocation.latitude / 90) * 40;
-        const locX = 50 + (location.longitude / 180) * 40;
-        const locY = 50 - (location.latitude / 90) * 40;
+        const mainX = clamp(50 + (mainLocation.longitude / 180) * 40);
+        const mainY = clamp(50 - (mainLocation.latitude / 90) * 40);
+        const locX = clamp(50 + (location.longitude / 180) * 40);
+        const locY = clamp(50 - (location.latitude / 90) * 40);
 
         return (
           <React.Fragment key={index}>
@@ -111,7 +111,7 @@ const MapDisplay: React.FC<MapDisplayProps> = ({ mainLocation, nearbyLocations =
                 left: `${Math.min(mainX, locX)}%`,
                 top: `${mainY}%`,
                 width: `${Math.abs(locX - mainX)}%`,
-                transform: `rotate(${Math.atan2(locY - mainY, locX - mainX)}rad)`,
+                transform: `rotate(${Math.atan2(locY - mainY, locX - mainX) * (180 / Math.PI)}deg)`,
                 transformOrigin: `${mainX < locX ? '0' : '100%'} 50%`,
               }}
             />
