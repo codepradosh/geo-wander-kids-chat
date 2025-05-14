@@ -50,7 +50,7 @@ const MapComponent: React.FC<Props> = ({ mainLocation, locations }) => {
       : [0, 0];
 
   return (
-    <MapContainer center={defaultCenter} zoom={2} style={{ height: "500px", width: "100%" }}>
+    <MapContainer center={center} zoom={5} style={{ height: "500px", width: "100%" }}>
       <TileLayer
         attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
