@@ -79,7 +79,7 @@ const ChatSection = () => {
   return (
     <div className="md:col-span-2 flex flex-col">
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md p-4 mb-4 flex-1 overflow-hidden flex flex-col border-2 border-kid-green/30">
-        <div className="flex-1 overflow-y-auto p-2 flex flex-col">
+        <div className="flex flex-col gap-2 overflow-auto h-[500px] p-4">
           {messages.map((msg, index) => (
             <ChatMessage key={index} message={msg.text} isBot={msg.isBot} />
           ))}
