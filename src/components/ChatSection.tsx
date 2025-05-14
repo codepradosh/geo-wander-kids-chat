@@ -4,6 +4,7 @@ import { toast } from "@/hooks/use-toast";
 import ChatInput from '@/components/ChatInput';
 import ChatMessage from '@/components/ChatMessage';
 import MapDisplay from '@/components/MapDisplay';
+import MapComponent from '@/components/MapComponent';
 import FunFactBubble from '@/components/FunFactBubble';
 import { Trees, Mountain } from 'lucide-react';
 import { sendChatMessage, formatLocationData } from '@/services/geochatService';
@@ -24,6 +25,11 @@ const presetQuestions = [
   "How big is the ocean?",
   "Where is the North Pole?",
   "What's the capital of Japan?",
+];
+const locations = [
+  { name: "New York", lat: 40.7128, long: -74.006 },
+  { name: "London", lat: 51.5074, long: -0.1278 },
+  { name: "Tokyo", lat: 35.6895, long: 139.6917 },
 ];
 
 const ChatSection = () => {
@@ -107,14 +113,7 @@ const ChatSection = () => {
       </div>
       
       <div className="mb-4">
-        <MapDisplay 
-          mainLocation={locationData ? {
-            name: locationData.name,
-            latitude: locationData.latitude || 0,
-            longitude: locationData.longitude || 0
-          } : undefined}
-          nearbyLocations={locationData?.nearbyLocations || []}
-        />
+        <MapComponent locations={locations}>
       </div>
 
       {locationData?.mainAttractions && locationData.mainAttractions.length > 0 && (

@@ -68,7 +68,10 @@
     "zustand": "^4.4.1",
     "@react-spring/web": "^9.7.3",
     "react-use-measure": "^2.1.1",
-    "@lottiefiles/react-lottie-player": "^3.5.3"
+    "@lottiefiles/react-lottie-player": "^3.5.3",
+    "leaflet": "^1.9.4",
+    "react-leaflet": "^4.2.1",
+    "react-scripts": "5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
