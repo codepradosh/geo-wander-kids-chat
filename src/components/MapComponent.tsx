@@ -13,6 +13,14 @@ const DefaultIcon = L.icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
+
+const RedIcon = L.icon({
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+  shadowUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
 L.Marker.prototype.options.icon = DefaultIcon;
 
 interface Location {
@@ -23,6 +31,7 @@ interface Location {
 
 interface Props {
   locations: Location[];
+  mainLocation: Location;
 }
 
 // Helper component to update map center
@@ -35,11 +44,10 @@ const RecenterMap = ({ latitude, longitude }: { latitude: number; longitude: num
   return null;
 };
 
-const MapComponent: React.FC<Props> = ({ locations }) => {
-  const defaultCenter: [number, number] = locations.length
-    ? [locations[0].latitude, locations[0].longitude]
-    : [0, 0];
-//     console.log(locations);
+const MapComponent: React.FC<Props> = ({ mainLocation, locations }) => {
+  const center: [number, number] = mainLocation
+      ? [mainLocation.latitude, mainLocation.longitude]
+      : [0, 0];
 
   return (
     <MapContainer center={defaultCenter} zoom={2} style={{ height: "500px", width: "100%" }}>
@@ -47,14 +55,21 @@ const MapComponent: React.FC<Props> = ({ locations }) => {
         attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {locations.length > 0 && (
-        <RecenterMap latitude={locations[0].latitude} longitude={locations[0].longitude} />
-      )}
-      {locations.map((loc, index) => (
-        <Marker key={index} position={[loc.latitude, loc.longitude]}>
-          <Popup>{loc.name}</Popup>
-        </Marker>
-      ))}
+      <RecenterMap latitude={center[0]} longitude={center[1]} />
+
+            {/* Main location with red marker */}
+            {mainLocation && (
+              <Marker position={[mainLocation.latitude, mainLocation.longitude]} icon={RedIcon}>
+                <Popup>{mainLocation.name} (Main)</Popup>
+              </Marker>
+            )}
+
+            {/* Other locations with default marker */}
+            {locations.map((loc, index) => (
+              <Marker key={index} position={[loc.latitude, loc.longitude]}>
+                <Popup>{loc.name}</Popup>
+              </Marker>
+            ))}
     </MapContainer>
   );
 };
